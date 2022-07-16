@@ -3,73 +3,57 @@ import csv
 
 Pybank_csv = os.path.join(".", "Resources","budget_data.csv")
 
+#Setting empty lists to store values 
 months = []
-NetTotalPnL = 0
 PnlValues = []
 ChangesinPNL = []
 
+#Opening and reading Pybank csv file
 with open(Pybank_csv) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter= ",")
+    #Storing HeaderRow
     header_row = next(csv_file)
-    #print(header_row)
+    
 
     for row in csv_reader:
-        #Reading Months in a list
+        #Storing Months in a list
         months.append(row[0])
         
-        #Reading Profit/loss Values in a list
+        #Storing Profit/loss Values in a list
         PnlValues.append(int(row[1]))
 
 #Getting the total month count in dataset
 TotalMonth_count = len(months)
 
-
+#Getting the Net Total Profit & Loss in the given dataset
 NetTotalPnL = sum(PnlValues)
 
+#Running a for loop to get changes in profit and loss from month to month to calculate the average
 for v in range(1,len(PnlValues)):
     change = PnlValues[v]-PnlValues[v-1]
     ChangesinPNL.append(change)
-                
+
+#Getting the average change in Profit and Loss               
 Average = sum(ChangesinPNL)/len(ChangesinPNL)
 Average = round(Average, 2)
 
-#print(Average)
 
+#Extracting the Max Change and the corresponding month from the list of ChangesinPNL
 MaxChange= max(ChangesinPNL)
-#print(MaxChange)
 MaxIndex = ChangesinPNL.index(MaxChange)+1
-#print(MaxIndex)
 MaxMonth = months[MaxIndex]
-#print(MaxMonth)
 
 
 
+#Extracting the Min Change and the corresponding month from the list of ChangesinPNL
 MinChange = min(ChangesinPNL)
-#print(MinChange)
 MinIndex = ChangesinPNL.index(MinChange)+1
-#print(MinIndex)
 MinMonth = months[MinIndex]
-#print(MinMonth)
 
 
-print(TotalMonth_count)
-print(NetTotalPnL)
-print(Average)
-print(MaxChange)
-print(MaxMonth)            
-print(MinChange)       
-print(MinMonth)
 
-
-print("Financial Analysis")  
-print("-------------------------------") 
-print(f"Total Months: {TotalMonth_count}")
-print(f"Total: ${NetTotalPnL}")
-print(f"Average Change: ${Average}")
-print(f"Greatest Increase in Profits: {MaxMonth} (${MaxChange})")
-print(f"Greatest Decrease in Profits: {MinMonth} (${MinChange})")
-
-result = f"""
+#Formatting and storing the desired result in a Variable called "result_PyBank"
+result_PyBank = f"""
 Financial Analysis
 -------------------------------
 Total Months: {TotalMonth_count}       
@@ -79,10 +63,11 @@ Greatest Increase in Profits: {MaxMonth} (${MaxChange})
 Greatest Decrease in Profits: {MinMonth} (${MinChange})
 """
 
-print(result)
+#Printing Result
+print(result_PyBank)
 
-output_path = os.path.join("analysis", "result.txt")
+#Exporting result to a Txt.file in the analysis folder
+output_path = os.path.join("analysis", "result_PyBank.txt")
 with open (output_path, 'w') as textfile:
-    textfile.write(result)
+    textfile.write(result_PyBank)
 
-    
